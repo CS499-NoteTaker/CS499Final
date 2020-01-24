@@ -15,10 +15,15 @@ public class DocumentResource{
         return str;
     }
 
-    private void parseHTML() {
-        //parse the html and create the document.
+    //return the htmls from frontend that will convert to pdf
+    private String getHtml(){
+        return null;
     }
+    //merge all html to become 1 html that will convert to pdf using jsoup
+    private void mergeAllHtml(){
 
+    }
+    //eventually will be public return response to be able to give users to download the pdf file return response
     private void convertToPdf() {
 
     }
