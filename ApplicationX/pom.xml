@@ -55,6 +55,12 @@
             <artifactId>jersey-media-json-binding</artifactId>
             <version>2.26-b04</version>
         </dependency>
+        <dependency>
+            <groupId>com.itextpdf</groupId>
+            <artifactId>itext7-core</artifactId>
+            <version>${itext.version}</version>
+            <type>pom</type>
+        </dependency>
 
         <!-- https://mvnrepository.com/artifact/org.glassfish.grizzly/grizzly-http-server -->
         <dependency>
@@ -68,12 +74,7 @@
             <artifactId>jersey-container-grizzly2-http</artifactId>
             <version>2.28</version>
         </dependency>
-        <dependency>
-            <!-- jsoup HTML parser library @ https://jsoup.org/ -->
-            <groupId>org.jsoup</groupId>
-            <artifactId>jsoup</artifactId>
-            <version>1.12.1</version>
-        </dependency>
+
 
 
 
@@ -91,5 +92,7 @@
     <properties>
         <jersey.version>2.29.1</jersey.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+
+            <itext.version>RELEASE</itext.version>
     </properties>
 </project>

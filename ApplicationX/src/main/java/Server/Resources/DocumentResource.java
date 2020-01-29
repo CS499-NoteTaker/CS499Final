@@ -1,5 +1,8 @@
 package Server.Resources;
 
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 
@@ -20,7 +23,10 @@ public class DocumentResource{
         return null;
     }
     //merge all html to become 1 html that will convert to pdf using jsoup
-    private void mergeAllHtml(){
+    private void mergeAllHtml(String [] htmls){
+
+
+
 
     }
     //eventually will be public return response to be able to give users to download the pdf file return response
