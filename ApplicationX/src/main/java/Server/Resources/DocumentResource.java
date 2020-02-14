@@ -20,16 +20,18 @@ import java.util.List;
 //import org.apache.poi.xwpf.usermodel.XWPFDocument;
 
 @Path("document/")
+
 public class DocumentResource{
     private static int count = 0;
     private String string;
     public String globalDir;  //testing purposes
     //TESTING
     private File tempFile;
+
     @GET
     @Path("/test/")
     @Produces(MediaType.APPLICATION_XML)
-    public Htmls getHtmls(){
+    public Htmls get(){
         Htmls h1 = new Htmls();
         String [] s = new String [3];
         s[0] = "<p>This is a first paragraph</p>";
@@ -37,6 +39,7 @@ public class DocumentResource{
         s[2] = "<p>This is a third paragraph</p>";
 
         h1.setHtmls(s);
+        h1.getHtmls();
         return h1;
     }
 
@@ -69,7 +72,7 @@ public class DocumentResource{
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         PdfDocument pdfDoc = new PdfDocument(new PdfWriter(baos));
         Document doc = new Document(pdfDoc);
-        for (String html : src.getHtmls()) {
+        for (String html : src.getArray()) {
             List<IElement> elements = HtmlConverter.convertToElements(new FileInputStream(html), properties);
             for (IElement element : elements) {
                 doc.add((IBlockElement)element);

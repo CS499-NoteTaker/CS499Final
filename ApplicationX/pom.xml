@@ -48,6 +48,11 @@
             <groupId>org.glassfish.jersey.inject</groupId>
             <artifactId>jersey-hk2</artifactId>
         </dependency>
+        <dependency>
+            <groupId>org.glassfish.jersey.media</groupId>
+            <artifactId>jersey-media-moxy</artifactId>
+            <version>2.19</version>
+        </dependency>
 
         <!-- https://mvnrepository.com/artifact/org.glassfish.jersey.media/jersey-media-json-binding-->
         <dependency>
