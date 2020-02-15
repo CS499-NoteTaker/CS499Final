@@ -9,18 +9,28 @@ import com.itextpdf.kernel.pdf.PdfWriter;
 import com.itextpdf.layout.Document;
 import com.itextpdf.layout.element.IBlockElement;
 import com.itextpdf.layout.element.IElement;
+import org.json.JSONArray;
+import org.json.JSONObject;
+import com.google.gson.Gson;
 
+import javax.inject.Singleton;
+import javax.json.JsonObject;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.StreamingOutput;
 
 import java.io.*;
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Scanner;
 
 //import org.apache.poi.xwpf.usermodel.XWPFDocument;
 
 @Path("document/")
-
+@Singleton
 public class DocumentResource{
     private static int count = 0;
     private String string;
@@ -30,7 +40,7 @@ public class DocumentResource{
 
     @GET
     @Path("/test/")
-    @Produces(MediaType.APPLICATION_XML)
+    @Produces(MediaType.APPLICATION_JSON)
     public Htmls get(){
         Htmls h1 = new Htmls();
         String [] s = new String [3];
@@ -44,120 +54,83 @@ public class DocumentResource{
     }
 
 
-    @Path("/download")
-    public class RestDownloadService {
+//        @GET
+//        @Path("download")
+//        @Produces("application/pdf")
+//        public Response download() throws IOException {
+//
+//            //find out how to save the file in server
+//            //where to write, pdf writer
+//
+//            javax.ws.rs.core.Response.ResponseBuilder response = Response.ok(tempFile );
+//            response.header("Content-Disposition",
+//                    "attachment; filename=\"ApplicationX.pdf\"");
+//            return response.build();
+//        }
 
-        @GET
-        @Path("/service-record")
-        @Produces("application/pdf")
-        public Response download() {
-
-            //find out how to save the file in server
-            //where to write, pdf writer
-
-            javax.ws.rs.core.Response.ResponseBuilder response = Response.ok((Object) tempFile);
-            response.header("Content-Disposition",
-                    "attachment; filename=\"employee_1415.pdf\"");
-            return response.build();
+    @POST
+    @Path("/tesst2/")
+    @Produces(MediaType.TEXT_PLAIN)
+    @Consumes(MediaType.APPLICATION_JSON)
+    //LEARNT, RESTAPI cannot return String [] or any array type since its not text plain.
+    public String testing(String src){
+        final JSONObject jsonObject = new JSONObject(src);
+        final JSONArray data = jsonObject.getJSONArray("ht");
+        String [] arr = new String [data.length()];
+        for(int i =0;i<arr.length;i++){
+            System.out.println(data.get(i).toString());
+            arr[i] = data.get(i).toString();
         }
+        return Arrays.toString(arr);
+
+//        JSONArray jarr = obj.getJSONArray("ht");
+//        int n = jarr.length();
+//
+//        String [] arr = new String [n];
+//        for(int i =0;i<arr.length;i++){
+//            System.out.println(jarr.get(i).toString());
+//            arr[i] = jarr.get(i).toString();
+//        }
+//        return arr;
     }
+
     @POST
     @Path("/convert/")
-    @Produces("text/plain")
-    @Consumes("application/json")
-    public String createpdf2(Htmls src) throws IOException{
+    @Produces("application/pdf")
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response createpdf2(String src) throws IOException{
         //hard coding for the test
-
+        final JSONObject jsonObject2 = new JSONObject(src);
+        final JSONArray data = jsonObject2.getJSONArray("ht");
+        String [] arr = new String [data.length()];
+        for(int i =0;i<arr.length;i++){
+            arr[i] = data.get(i).toString();
+        }
         ConverterProperties properties = new ConverterProperties();
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         PdfDocument pdfDoc = new PdfDocument(new PdfWriter(baos));
         Document doc = new Document(pdfDoc);
-        for (String html : src.getArray()) {
-            List<IElement> elements = HtmlConverter.convertToElements(new FileInputStream(html), properties);
+
+        for (String html : arr) {
+            System.out.println(html);
+            List<IElement> elements = HtmlConverter.convertToElements(html, properties);
+            System.out.println(elements);
             for (IElement element : elements) {
                 doc.add((IBlockElement)element);
             }
         }
         doc.close();
+
         byte[] bytes = baos.toByteArray();
-
-        String prefix = "tempFile"+count;
-        String suffix = "pdf";
-
-        tempFile = File.createTempFile(prefix,suffix);
-        //tempFile.deleteOnExit();
-
-        //user
-        FileOutputStream fos = new FileOutputStream(tempFile);
-        fos.write(bytes);
-        fos.flush();
-        fos.close();
-
-        return "ok";
-    }
-
-
-
-
-
-    //return the htmls from frontend that will convert to pdf
-    private String getHtml(){
-        return null;
-    }
-    //merge all html to become 1 html that will convert to pdf using jsoup
-    //eventually will be public return response to be able to give users to download the pdf file return response
-    private void convertToPdf() {
+        StreamingOutput fileStream =  new StreamingOutput() {
+            @Override
+            public void write(OutputStream output) throws IOException, WebApplicationException {
+                output.write(bytes);
+                output.flush();
+            }
+        };
+        Response.ResponseBuilder response = Response.ok(fileStream);
+        return response.build();
 
     }
-
-
-//
-//
-//	@POST
-//	@Path("post")
-//	public void postContenttoDoc(String text) {
-//		createDocument(text);
-//	}
-//
-//
-//
-//
-////will be used in the future.
-////	@GET
-////	//@Path("{dir}")
-////	@Produces(MediaType.TEXT_PLAIN)
-////	public Response getDocument(@PathParam("dir")String dir) {
-////		File file = new File(dir);
-////		ResponseBuilder response = Response.ok((Object)dir);
-////		response.header("Content=Disposition","attachment; filename="+dir);
-////		return response.build();
-////	}
-//	//need produces
-//	@Path("dir")
-//	public Response getDocument() {
-//		String dir = "/Users/sannge/Projects/createdocument.docx"; //just hardcoded the directory where the file is gonna store
-//		File file = new File(dir);
-//		ResponseBuilder response = Response.ok((Object)dir);
-//		response.header("Content=Disposition","attachment; filename="+dir);
-//		return response.build();
-//	}
-//
-//
-//	//might need to parse the text parsed from text area and see the style, format, title, size everything.
-//	//but for now, we will just hard code and test if that works.
-//
-//	private void createDocument(String text) {
-//		XWPFDocument document = new XWPFDocument();
-//		FileOutputStream out;
-//		try {
-//			out = new FileOutputStream( new File("createdocument.docx"));
-//			document.write(out);
-//		      out.close();
-//		} catch (IOException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
-//
-//	}
-//
 }
