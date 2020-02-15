@@ -38,20 +38,6 @@ public class DocumentResource{
     //TESTING
     private File tempFile;
 
-    @GET
-    @Path("/test/")
-    @Produces(MediaType.APPLICATION_JSON)
-    public Htmls get(){
-        Htmls h1 = new Htmls();
-        String [] s = new String [3];
-        s[0] = "<p>This is a first paragraph</p>";
-        s[1] = "<p>This is a second paragraph</p>";
-        s[2] = "<p>This is a third paragraph</p>";
-
-        h1.setHtmls(s);
-        h1.getHtmls();
-        return h1;
-    }
 
 
 //        @GET
