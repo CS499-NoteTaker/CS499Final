@@ -1,6 +1,18 @@
 package Core;
 
 public class Controller {
+
+    /*
+    afasdlkfjasdlfkjasd
+    adsf
+    asdf
+    asdf
+    asdf
+    asdfasd
+    fasd
+    fas
+    df
+     */
     private ResearchedCellManager manager;
 
     public String getCell(){
