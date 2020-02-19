@@ -3,16 +3,7 @@ package Core;
 public class Controller {
 
     /*
-    afasdlkfjasdlfkjasd
-    adsf
-    asdf
-    asdf
-    asdf
-    asdfasd
-    fasd
-    fas
-    df
-    I added something
+
      */
     private ResearchedCellManager manager;
 

@@ -1,7 +1,4 @@
 package Server.Resources;
-
-
-
 import com.itextpdf.html2pdf.ConverterProperties;
 import com.itextpdf.html2pdf.HtmlConverter;
 import com.itextpdf.kernel.pdf.PdfDocument;
@@ -11,49 +8,19 @@ import com.itextpdf.layout.element.IBlockElement;
 import com.itextpdf.layout.element.IElement;
 import org.json.JSONArray;
 import org.json.JSONObject;
-import com.google.gson.Gson;
-
 import javax.inject.Singleton;
-import javax.json.JsonObject;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.StreamingOutput;
-
 import java.io.*;
-import java.lang.reflect.Array;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Scanner;
-
-//import org.apache.poi.xwpf.usermodel.XWPFDocument;
 
 @Path("document/")
-@Singleton
+//@Singleton
 public class DocumentResource{
-    private static int count = 0;
-    private String string;
-    public String globalDir;  //testing purposes
     //TESTING
-    private File tempFile;
-
-
-
-//        @GET
-//        @Path("download")
-//        @Produces("application/pdf")
-//        public Response download() throws IOException {
-//
-//            //find out how to save the file in server
-//            //where to write, pdf writer
-//
-//            javax.ws.rs.core.Response.ResponseBuilder response = Response.ok(tempFile );
-//            response.header("Content-Disposition",
-//                    "attachment; filename=\"ApplicationX.pdf\"");
-//            return response.build();
-//        }
-
     @POST
     @Path("/tesst2/")
     @Produces(MediaType.TEXT_PLAIN)
@@ -69,29 +36,24 @@ public class DocumentResource{
         }
         return Arrays.toString(arr);
 
-//        JSONArray jarr = obj.getJSONArray("ht");
-//        int n = jarr.length();
-//
-//        String [] arr = new String [n];
-//        for(int i =0;i<arr.length;i++){
-//            System.out.println(jarr.get(i).toString());
-//            arr[i] = jarr.get(i).toString();
-//        }
-//        return arr;
     }
-
+    /*The request will get array of htmls as JSON, and then it is converted to String array of htmls .
+    After that it will be written into pdf.
+     */
     @POST
     @Path("/convert/")
     @Produces("application/pdf")
     @Consumes(MediaType.APPLICATION_JSON)
     public Response createpdf2(String src) throws IOException{
-        //hard coding for the test
+        //need to provide our own CSS.
+        //Getting JSON objects and put them in array.
         final JSONObject jsonObject2 = new JSONObject(src);
         final JSONArray data = jsonObject2.getJSONArray("ht");
         String [] arr = new String [data.length()];
         for(int i =0;i<arr.length;i++){
             arr[i] = data.get(i).toString();
         }
+        //convert htmls and create pdf then write to it and store as bytes
         ConverterProperties properties = new ConverterProperties();
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         PdfDocument pdfDoc = new PdfDocument(new PdfWriter(baos));
@@ -108,6 +70,7 @@ public class DocumentResource{
         doc.close();
 
         byte[] bytes = baos.toByteArray();
+        //download purposes
         StreamingOutput fileStream =  new StreamingOutput() {
             @Override
             public void write(OutputStream output) throws IOException, WebApplicationException {
@@ -117,6 +80,5 @@ public class DocumentResource{
         };
         Response.ResponseBuilder response = Response.ok(fileStream);
         return response.build();
-
     }
 }
