@@ -12,11 +12,9 @@ public class main {
 
     public static final String[] RESOURCES_PACKAGES = {"Server/Resources"};
 
-
     public static void main(String [] args){
         startServer();
     }
-
 
     public static HttpServer startServer() {
         URI baseUri = UriBuilder.fromUri(URI).port(PORT).build();
