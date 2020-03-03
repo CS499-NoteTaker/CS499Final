@@ -20,23 +20,7 @@ import java.util.List;
 @Path("document/")
 //@Singleton
 public class DocumentResource{
-    //TESTING
-    @POST
-    @Path("/tesst2/")
-    @Produces(MediaType.TEXT_PLAIN)
-    @Consumes(MediaType.APPLICATION_JSON)
-    //LEARNT, RESTAPI cannot return String [] or any array type since its not text plain.
-    public String testing(String src){
-        final JSONObject jsonObject = new JSONObject(src);
-        final JSONArray data = jsonObject.getJSONArray("ht");
-        String [] arr = new String [data.length()];
-        for(int i =0;i<arr.length;i++){
-            System.out.println(data.get(i).toString());
-            arr[i] = data.get(i).toString();
-        }
-        return Arrays.toString(arr);
 
-    }
     /*The request will get array of htmls as JSON, and then it is converted to String array of htmls .
     After that it will be written into pdf.
      */
@@ -44,22 +28,25 @@ public class DocumentResource{
     @Path("/convert/")
     @Produces("application/pdf")
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response createpdf2(String src) throws IOException{
-        //need to provide our own CSS.
-        //Getting JSON objects and put them in array.
-        final JSONObject jsonObject2 = new JSONObject(src);
-        final JSONArray data = jsonObject2.getJSONArray("ht");
-        String [] arr = new String [data.length()];
-        for(int i =0;i<arr.length;i++){
-            arr[i] = data.get(i).toString();
+    public Response createPdf(String src) throws IOException{
+        // src - string representation of a json array of html.
+        // Converts json into a JSON Object
+        final JSONObject jsonObject = new JSONObject(src);
+        final JSONArray jsonArray = jsonObject.getJSONArray("ht");
+        String [] htmlArray = new String [jsonArray.length()];
+        // Loads jsonArray elements into an array of string of html
+        for(int i = 0; i < htmlArray.length; i++){
+            htmlArray[i] = jsonArray.get(i).toString();
         }
-        //convert htmls and create pdf then write to it and store as bytes
+
+        // Instantiates Byte array output stream and PDF doc.
         ConverterProperties properties = new ConverterProperties();
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         PdfDocument pdfDoc = new PdfDocument(new PdfWriter(baos));
         Document doc = new Document(pdfDoc);
 
-        for (String html : arr) {
+        // Converts htmlArray elements into HTML objects (according to iText) and append to PDF doc
+        for (String html : htmlArray) {
             System.out.println(html);
             List<IElement> elements = HtmlConverter.convertToElements(html, properties);
             System.out.println(elements);
@@ -80,5 +67,23 @@ public class DocumentResource{
         };
         Response.ResponseBuilder response = Response.ok(fileStream);
         return response.build();
+    }
+
+    //TESTING
+    @POST
+    @Path("/tesst2/")
+    @Produces(MediaType.TEXT_PLAIN)
+    @Consumes(MediaType.APPLICATION_JSON)
+    //LEARNT, RESTAPI cannot return String [] or any array type since its not text plain.
+    public String testing(String src){
+        final JSONObject jsonObject = new JSONObject(src);
+        final JSONArray data = jsonObject.getJSONArray("ht");
+        String [] arr = new String [data.length()];
+        for(int i =0;i<arr.length;i++){
+            System.out.println(data.get(i).toString());
+            arr[i] = data.get(i).toString();
+        }
+        return Arrays.toString(arr);
+
     }
 }
