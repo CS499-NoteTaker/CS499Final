@@ -24,6 +24,18 @@ public class DocumentResource{
     /*The request will get array of htmls as JSON, and then it is converted to String array of htmls .
     After that it will be written into pdf.
      */
+
+    /**
+     * This method receives a string representation of a json object. Converts string into json object.
+     * Parses json object to retrieve json array value with key "ht". Then Converts json array into array
+     * of string denoted as "htmlArray" which contains html elements as string.
+     *
+     * Traverses "htmlArray" elements to append to a pdf document. Once finished, converts pdf doc object
+     * into bytes and returns back to user, a pdf file.
+     * @param src - string representation of json object.
+     * @return - pdf file
+     * @throws IOException
+     */
     @POST
     @Path("/convert/")
     @Produces("application/pdf")
