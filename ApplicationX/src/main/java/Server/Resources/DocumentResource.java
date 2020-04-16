@@ -56,8 +56,10 @@ public class DocumentResource{
 
         */
         ResearchedCellsHandler rcHandler = new ResearchedCellsHandler(jsonObject);
+        System.out.println("Start for loop");
         System.out.println(rcHandler.toString() );
-        
+        System.out.println("End for loop");
+
         // Instantiates Byte array output stream and PDF doc.
         ConverterProperties properties = new ConverterProperties();
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
