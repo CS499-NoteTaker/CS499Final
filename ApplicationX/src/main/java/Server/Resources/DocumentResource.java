@@ -1,4 +1,5 @@
 package Server.Resources;
+import Core.ResearchedCellsHandler;
 import com.itextpdf.html2pdf.ConverterProperties;
 import com.itextpdf.html2pdf.HtmlConverter;
 import com.itextpdf.kernel.pdf.PdfDocument;
@@ -44,6 +45,7 @@ public class DocumentResource{
         // src - string representation of a json array of html.
         // Converts json into a JSON Object
         final JSONObject jsonObject = new JSONObject(src);
+        /*
         final JSONArray jsonArray = jsonObject.getJSONArray("ht");
         String [] htmlArray = new String [jsonArray.length()];
 
@@ -52,6 +54,10 @@ public class DocumentResource{
             htmlArray[i] = jsonArray.get(i).toString();
         }
 
+        */
+        ResearchedCellsHandler rcHandler = new ResearchedCellsHandler(jsonObject);
+        System.out.println(rcHandler.toString() );
+        
         // Instantiates Byte array output stream and PDF doc.
         ConverterProperties properties = new ConverterProperties();
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -59,12 +65,12 @@ public class DocumentResource{
         Document doc = new Document(pdfDoc);
 
         // Converts htmlArray elements into HTML objects (according to iText) and append to PDF doc
-        for (String html : htmlArray) {
-            System.out.println(html);
-            List<IElement> elements = HtmlConverter.convertToElements(html, properties);
-            System.out.println(elements);
-            for (IElement element : elements) {
-                doc.add((IBlockElement)element);
+        for(int i = 0; i < rcHandler.size(); i++) {
+            String researchedCell = rcHandler.get(i);
+            List<IElement> htmlResearchedCells = HtmlConverter.convertToElements(researchedCell, properties);
+            System.out.println(htmlResearchedCells);
+            for (IElement element : htmlResearchedCells) {
+                doc.add((IBlockElement) element);
             }
         }
         doc.close();

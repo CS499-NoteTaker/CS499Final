@@ -32,4 +32,12 @@ public class ResearchedCellsHandler {
         return researchedCells.get(index);
     }
 
+    public int size() {
+        return researchedCells.size();
+    }
+
+    public String toString() {
+        return researchedCells.toString();
+    }
+
 }
