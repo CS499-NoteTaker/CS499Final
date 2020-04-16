@@ -1,6 +1,6 @@
 package Core;
 import org.junit.*;
-public class ResearchedCellHandlerTest {
+public class ResearchedCellsHandlerTest {
     @Test
     public void testGetCellByCell() {
     }

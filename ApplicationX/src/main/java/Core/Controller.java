@@ -5,7 +5,7 @@ public class Controller {
     /*
 
      */
-    private ResearchedCellManager manager;
+    private ResearchedCellsHandler manager;
 
     public String getCell(){
         return null;

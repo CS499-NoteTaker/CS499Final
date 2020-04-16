@@ -46,6 +46,7 @@ public class DocumentResource{
         final JSONObject jsonObject = new JSONObject(src);
         final JSONArray jsonArray = jsonObject.getJSONArray("ht");
         String [] htmlArray = new String [jsonArray.length()];
+
         // Loads jsonArray elements into an array of string of html
         for(int i = 0; i < htmlArray.length; i++){
             htmlArray[i] = jsonArray.get(i).toString();
