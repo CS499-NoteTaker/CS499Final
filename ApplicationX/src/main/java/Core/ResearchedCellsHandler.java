@@ -38,7 +38,7 @@ public class ResearchedCellsHandler {
     /**
      * This Method will convert string representation of researched cell
      * into an HTML element.
-     * @param researchedCell - html string of a researched cell
+     * @param index - index at which research cell to convert
      * @return - html IElement
      * @throws IOException
      */
