@@ -15,10 +15,10 @@ public class ResearchedCellsHandler {
 
     public ResearchedCellsHandler (JSONObject jsonObject) {
         final JSONArray jsonArray = jsonObject.getJSONArray("ht");
-        researchedCells = new ArrayList<String>(jsonArray.length());
+        researchedCells = new ArrayList<String>();
 
         // Loads jsonArray elements into an array of string of html
-        for(int i = 0; i < researchedCells.size(); i++){
+        for(int i = 0; i < jsonArray.length(); i++){
             String researchedCell = jsonArray.get(i).toString();
             researchedCells.add(i, researchedCell);
         }
