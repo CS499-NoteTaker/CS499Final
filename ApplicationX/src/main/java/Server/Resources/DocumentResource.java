@@ -44,27 +44,17 @@ public class DocumentResource{
     public Response createPdf(String src) throws IOException{
         // Converts json into a JSON Object
         final JSONObject jsonObject = new JSONObject(src);
-
         ResearchedCellsHandler rcHandler = new ResearchedCellsHandler(jsonObject);
-        System.out.println("Start for loop");
-        System.out.println(rcHandler.toString() );
-        System.out.println("End for loop");
 
         // Instantiates Byte array output stream and PDF doc.
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         PdfDocument pdfDoc = new PdfDocument(new PdfWriter(baos));
         Document doc = new Document(pdfDoc);
 
-        // Converts researched cells(according to iText) and append to PDF doc
+        // Converts researched cells into HTML elements and appends to PDF doc
         for(int i = 0; i < rcHandler.size(); i++) {
-            ConverterProperties properties = new ConverterProperties();
-            String researchedCell = rcHandler.get(i);
-            List<IElement> htmlResearchedCells = HtmlConverter.convertToElements(researchedCell, properties);
-            System.out.println(htmlResearchedCells);
-
-            for (IElement element : htmlResearchedCells) {
-                doc.add((IBlockElement) element);
-            }
+            IElement element = rcHandler.getHtmlResearchedCell(i);
+            doc.add((IBlockElement) element);
         }
         doc.close();
 

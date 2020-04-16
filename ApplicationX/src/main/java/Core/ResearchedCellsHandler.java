@@ -5,6 +5,8 @@ import com.itextpdf.html2pdf.HtmlConverter;
 import com.itextpdf.layout.element.IElement;
 import org.json.JSONArray;
 import org.json.JSONObject;
+
+import java.io.IOException;
 import java.util.List;
 
 import java.util.ArrayList;
@@ -32,14 +34,22 @@ public class ResearchedCellsHandler {
         return researchedCells.add( researchedCell );
     }
 
-    /*
-    public List<IElement> getHtmlResearchedCell() {
-        ConverterProperties properties = new ConverterProperties();
-        List<IElement> htmlResearchedCells = HtmlConverter.convertToElements(researchedCell, properties);
 
-        return null;
+    /**
+     * This Method will convert string representation of researched cell
+     * into an HTML element.
+     * @param researchedCell - html string of a researched cell
+     * @return - html IElement
+     * @throws IOException
+     */
+    public IElement getHtmlResearchedCell(int index) throws IOException {
+        ConverterProperties properties = new ConverterProperties();
+        String researchedCell = researchedCells.get(index);
+        IElement htmlElemnt = (HtmlConverter.convertToElements(researchedCell, properties)).get(0);
+
+        return htmlElemnt;
     }
-    */
+
     public String get(int index) {
         return researchedCells.get(index);
     }
