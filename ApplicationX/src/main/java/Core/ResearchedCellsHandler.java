@@ -1,7 +1,11 @@
 package Core;
 
+import com.itextpdf.html2pdf.ConverterProperties;
+import com.itextpdf.html2pdf.HtmlConverter;
+import com.itextpdf.layout.element.IElement;
 import org.json.JSONArray;
 import org.json.JSONObject;
+import java.util.List;
 
 import java.util.ArrayList;
 
@@ -28,6 +32,14 @@ public class ResearchedCellsHandler {
         return researchedCells.add( researchedCell );
     }
 
+    /*
+    public List<IElement> getHtmlResearchedCell() {
+        ConverterProperties properties = new ConverterProperties();
+        List<IElement> htmlResearchedCells = HtmlConverter.convertToElements(researchedCell, properties);
+
+        return null;
+    }
+    */
     public String get(int index) {
         return researchedCells.get(index);
     }

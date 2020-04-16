@@ -33,7 +33,7 @@ public class DocumentResource{
      *
      * Traverses "htmlArray" elements to append to a pdf document. Once finished, converts pdf doc object
      * into bytes and returns back to user, a pdf file.
-     * @param src - string representation of json object.
+     * @param src - string representation of json object that is html.
      * @return - pdf file
      * @throws IOException
      */
@@ -42,35 +42,26 @@ public class DocumentResource{
     @Produces("application/pdf")
     @Consumes(MediaType.APPLICATION_JSON)
     public Response createPdf(String src) throws IOException{
-        // src - string representation of a json array of html.
         // Converts json into a JSON Object
         final JSONObject jsonObject = new JSONObject(src);
-        /*
-        final JSONArray jsonArray = jsonObject.getJSONArray("ht");
-        String [] htmlArray = new String [jsonArray.length()];
 
-        // Loads jsonArray elements into an array of string of html
-        for(int i = 0; i < htmlArray.length; i++){
-            htmlArray[i] = jsonArray.get(i).toString();
-        }
-
-        */
         ResearchedCellsHandler rcHandler = new ResearchedCellsHandler(jsonObject);
         System.out.println("Start for loop");
         System.out.println(rcHandler.toString() );
         System.out.println("End for loop");
 
         // Instantiates Byte array output stream and PDF doc.
-        ConverterProperties properties = new ConverterProperties();
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         PdfDocument pdfDoc = new PdfDocument(new PdfWriter(baos));
         Document doc = new Document(pdfDoc);
 
-        // Converts htmlArray elements into HTML objects (according to iText) and append to PDF doc
+        // Converts researched cells(according to iText) and append to PDF doc
         for(int i = 0; i < rcHandler.size(); i++) {
+            ConverterProperties properties = new ConverterProperties();
             String researchedCell = rcHandler.get(i);
             List<IElement> htmlResearchedCells = HtmlConverter.convertToElements(researchedCell, properties);
             System.out.println(htmlResearchedCells);
+
             for (IElement element : htmlResearchedCells) {
                 doc.add((IBlockElement) element);
             }
