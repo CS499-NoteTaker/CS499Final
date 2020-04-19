@@ -46,6 +46,8 @@ public class DocumentResource{
         final JSONObject jsonObject = new JSONObject(src);
         ResearchedCellsHandler rcHandler = new ResearchedCellsHandler(jsonObject);
 
+        System.out.println(rcHandler.toString());
+        
         // Instantiates Byte array output stream and PDF doc.
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         PdfDocument pdfDoc = new PdfDocument(new PdfWriter(baos));
@@ -57,6 +59,7 @@ public class DocumentResource{
             doc.add((IBlockElement) element);
         }
         doc.close();
+
 
         byte[] bytes = baos.toByteArray();
         //download purposes
