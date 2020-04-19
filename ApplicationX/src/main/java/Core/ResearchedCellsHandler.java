@@ -45,9 +45,9 @@ public class ResearchedCellsHandler {
     public IElement getHtmlResearchedCell(int index) throws IOException {
         ConverterProperties properties = new ConverterProperties();
         String researchedCell = researchedCells.get(index);
-        IElement htmlElemnt = (HtmlConverter.convertToElements(researchedCell, properties)).get(0);
-
-        return htmlElemnt;
+        IElement htmlElement = (HtmlConverter.convertToElements(researchedCell, properties)).get(0);
+        System.out.println(htmlElement);
+        return htmlElement;
     }
 
     public String get(int index) {
