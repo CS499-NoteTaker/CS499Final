@@ -42,10 +42,10 @@ public class ResearchedCellsHandler {
      * @return - html IElement
      * @throws IOException
      */
-    public IElement getHtmlResearchedCell(int index) throws IOException {
+    public List getHtmlResearchedCell(int index) throws IOException {
         ConverterProperties properties = new ConverterProperties();
         String researchedCell = researchedCells.get(index);
-        IElement htmlElement = (HtmlConverter.convertToElements(researchedCell, properties)).get(0);
+        List<IElement> htmlElement = (HtmlConverter.convertToElements(researchedCell, properties));
         System.out.println(htmlElement);
         return htmlElement;
     }

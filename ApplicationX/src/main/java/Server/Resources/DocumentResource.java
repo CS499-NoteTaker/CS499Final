@@ -55,8 +55,9 @@ public class DocumentResource{
 
         // Converts researched cells into HTML elements and appends to PDF doc
         for(int i = 0; i < rcHandler.size(); i++) {
-            IElement element = rcHandler.getHtmlResearchedCell(i);
-            doc.add((IBlockElement) element);
+            List<IElement> htmlElements = rcHandler.getHtmlResearchedCell(i);
+            for( IElement element : htmlElements)
+                doc.add((IBlockElement) element);
         }
         doc.close();
 
