@@ -18,8 +18,8 @@
                 <version>2.5.1</version>
                 <inherited>true</inherited>
                 <configuration>
-                    <source>13</source>
-                    <target>13</target>
+                    <source>1.8</source>
+                    <target>1.8</target>
                 </configuration>
             </plugin>
         </plugins>
@@ -27,6 +27,18 @@
 
     <dependencyManagement>
         <dependencies>
+            <dependency>
+                <groupId>org.jsoup</groupId>
+                <artifactId>jsoup</artifactId>
+                <version>1.13.1</version>
+            </dependency>
+            <!-- https://mvnrepository.com/artifact/io.github.cdimascio/essence -->
+            <dependency>
+                <groupId>io.github.cdimascio</groupId>
+                <artifactId>essence</artifactId>
+                <version>0.12.6</version>
+            </dependency>
+
             <dependency>
                 <groupId>junit</groupId>
                 <artifactId>junit</artifactId>

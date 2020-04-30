@@ -7,7 +7,7 @@ import javax.ws.rs.core.UriBuilder;
 import java.net.URI;
 
 public class main {
-    public static final int PORT = 6969;
+    public static final int PORT = 6968;
     public static final String URI = "http://0.0.0.0/";
 
     public static final String[] RESOURCES_PACKAGES = {"Server/Resources"};
