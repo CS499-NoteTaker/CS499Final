@@ -1,4 +1,5 @@
 package Server.Resources;
+import Core.ResearchedCellsHandler;
 import com.itextpdf.html2pdf.ConverterProperties;
 import com.itextpdf.html2pdf.HtmlConverter;
 import com.itextpdf.kernel.pdf.PdfDocument;
@@ -32,7 +33,7 @@ public class DocumentResource{
      *
      * Traverses "htmlArray" elements to append to a pdf document. Once finished, converts pdf doc object
      * into bytes and returns back to user, a pdf file.
-     * @param src - string representation of json object.
+     * @param src - string representation of json object that is html.
      * @return - pdf file
      * @throws IOException
      */
@@ -41,32 +42,25 @@ public class DocumentResource{
     @Produces("application/pdf")
     @Consumes(MediaType.APPLICATION_JSON)
     public Response createPdf(String src) throws IOException{
-        // src - string representation of a json array of html.
         // Converts json into a JSON Object
         final JSONObject jsonObject = new JSONObject(src);
-        final JSONArray jsonArray = jsonObject.getJSONArray("ht");
-        String [] htmlArray = new String [jsonArray.length()];
-        // Loads jsonArray elements into an array of string of html
-        for(int i = 0; i < htmlArray.length; i++){
-            htmlArray[i] = jsonArray.get(i).toString();
-        }
+        ResearchedCellsHandler rcHandler = new ResearchedCellsHandler(jsonObject);
 
+        System.out.println(rcHandler.toString());
+        
         // Instantiates Byte array output stream and PDF doc.
-        ConverterProperties properties = new ConverterProperties();
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         PdfDocument pdfDoc = new PdfDocument(new PdfWriter(baos));
         Document doc = new Document(pdfDoc);
 
-        // Converts htmlArray elements into HTML objects (according to iText) and append to PDF doc
-        for (String html : htmlArray) {
-            System.out.println(html);
-            List<IElement> elements = HtmlConverter.convertToElements(html, properties);
-            System.out.println(elements);
-            for (IElement element : elements) {
-                doc.add((IBlockElement)element);
-            }
+        // Converts researched cells into HTML elements and appends to PDF doc
+        for(int i = 0; i < rcHandler.size(); i++) {
+            List<IElement> htmlElements = rcHandler.getHtmlResearchedCell(i);
+            for( IElement element : htmlElements)
+                doc.add((IBlockElement) element);
         }
         doc.close();
+
 
         byte[] bytes = baos.toByteArray();
         //download purposes

@@ -5,13 +5,11 @@ public class Controller {
     /*
 
      */
-    private ResearchedCellManager manager;
+    private ResearchedCellsHandler manager;
 
     public String getCell(){
         return null;
     }
 
-    public ResearchedCells getAllCell(){
-        return manager.getResearchedCells();
-    }
+
 }
