@@ -12,9 +12,5 @@ public class Controller {
     }
 
 
-    public ResearchedCells getAllCell(){
-        return manager.getResearchedCells();
-    }
-
 
 }
