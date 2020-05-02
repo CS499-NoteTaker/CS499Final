@@ -5,34 +5,48 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 /**
  * Citation MLA format for websites
  * Author's Last name, First name. "Title of Individual Web Page." Title of Website, Publisher, Date, URL.
  */
-public class Citation {
-    String authorNames;
-    String pageTitle;
-    String websiteTitle;
-    String publisher;
-    String releasedate;
-    String url;
-    Date accessdate;
-
-    EssenceResult data;
-    Document doc;
-    public Citation(String url) throws IOException{
-        this.url = url;
+public class Citation implements Serializable {
+    private ArrayList<String> authorNames;
+    private String pageTitle;
+    private String websiteTitle;
+    private String publisher;
+    private String releasedate;
+    private String url;
+    private Date accessdate;
+    
+    private EssenceResult data;
+    private Document doc;
+    public Citation(String url) throws IOException {
         doc = Jsoup.connect(url).get();
         data = Essence.extract(doc.html());
+
+        this.authorNames = getAuthorNames();
+
+        this.pageTitle = data.getSoftTitle();
+        this.websiteTitle = data.getTitle();
+        this.publisher = data.getPublisher();
+        this.releasedate = data.getDate();
+        this.url = url;
+        this.accessdate = getAccessDate();
     }
 
+    public void setUrl(String url){
+        this.url = url;
+    }
 
+    public String getUrl(){
+        return this.url;
+    }
 
-    public List<String> getAuthorNames(){
+    private ArrayList<String> getAuthorNames(){
         //data.getAuthor is only returning single element with all author names.
         ArrayList<String> finalAuthorList = new ArrayList<>();
         ArrayList<String> templist = (ArrayList<String>)data.getAuthors();
@@ -76,51 +90,52 @@ public class Citation {
     }
 
     public String getPageTitle(){
-        pageTitle = data.getSoftTitle();
+
         return data.getSoftTitle();
     }
 
     public String getWebsiteTitle(){
-        websiteTitle = doc.title();
+
         return doc.title();
     }
 
     public String getPublisher(){
-        publisher = data.getPublisher();
+
         return data.getPublisher();
     }
 
     public String getReleasedDate(){
-        releasedate = data.getDate();
+
         return data.getDate();
 
     }
 
     public Date getAccessDate(){
         Date date = new Date();
-        accessdate = date;
+
         return date;
     }
 
-
+    //for UI
     public String formatCitation(){
-        String pt = pageTitle;
-        String wt = websiteTitle;
-        String pb = publisher;
-        String rd = releasedate;
-        String ul = url;
-        Date ad = accessdate;
+        String names = makeAuthorsFormat(getAuthorNames());
+        String pt = getPageTitle();
+        String wt = getWebsiteTitle();
+        String pb = getPublisher();
+        String rd = getReleasedDate();
+        String ul = getUrl();
+        Date ad = getAccessDate();
+
 
         if(!pt.equals("")) pt = "\""+pt+"\". ";
         if(!wt.equals("")) wt = "\""+wt+"\". ";
-
-        pb = pb+". ";
+        if(!pb.isEmpty()) pb = pb+". ";
         if(!rd.equals(""))  rd = rd+". ";
         ul = ul+". ";
         String d = ad+". ";
         String s;
 
-        s = authorNames+pt+wt+pb+rd+ul+d;
+        s = names+pt+wt+pb+rd+ul+d;
         return s;
     }
 
@@ -129,7 +144,7 @@ public class Citation {
      * make switch or if statements to take care of multiple cases: N/A cases
      */
 
-    public String makeAuthorsFormat(ArrayList<String> authorList){
+    private String makeAuthorsFormat(ArrayList<String> authorList){
 
         String s = "";
         if(authorList.isEmpty() || authorList.get(0)==""){
@@ -152,10 +167,9 @@ public class Citation {
                 s += lastName+", "+firstName+"., ";
             }
         }
-
-        authorNames = s;
         return s;
     }
+
 
     public String addNumbertoCitation(int num, Citation citation) {
         return +(num+1) + ". " + "   " + citation.formatCitation();
