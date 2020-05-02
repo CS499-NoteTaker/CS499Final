@@ -1,16 +1,16 @@
 package Server;
 
-import Core.Controller;
+import Core.CitationController;
 
 public class GateWay {
 
-    private static Controller controller;
+    private static CitationController controller;
 
-    public static void setController(Controller c) {
+    public static void setController(CitationController c) {
         controller = c;
     }
 
-    public static Controller getController() {
+    public static CitationController getController() {
         return controller;
     }
 }

@@ -1,7 +1,5 @@
 package Core;
 
-import Core.Citation;
-
 import java.util.ArrayList;
 
 /** need to put citation numbers to the paragraphs that was cited. like this =>e.g. this is that[1].
@@ -9,6 +7,7 @@ import java.util.ArrayList;
 
 public class Bibliography {
     ArrayList<Citation> citationList ;
+    String bibString;
     public Bibliography(){
         citationList = new ArrayList<>();
     }
@@ -35,6 +34,7 @@ public class Bibliography {
                 list += templist.get(i).addNumbertoCitation(i,templist.get(i))+"\n\n"; // need to check later
             }
         }
+        bibString = list;
         return list;
     }
 
