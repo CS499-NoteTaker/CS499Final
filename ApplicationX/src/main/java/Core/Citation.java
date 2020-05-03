@@ -6,14 +6,12 @@ import org.jsoup.nodes.Document;
 
 import java.io.IOException;
 import java.io.Serializable;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.TimeZone;
 
 import static java.time.format.DateTimeFormatter.ISO_ZONED_DATE_TIME;
 
@@ -27,9 +25,9 @@ public class Citation implements Serializable {
     private String pageTitle;
     private String websiteTitle;
     private String publisher;
-    private String releasedate;
+    private String releaseDate;
     private String url;
-    private String accessdate;
+    private String accessDate;
     private ArrayList<String> authorNames;
 
     private EssenceResult data;
@@ -41,16 +39,17 @@ public class Citation implements Serializable {
         this.pageTitle = data.getSoftTitle();
         this.websiteTitle = data.getTitle();
         this.publisher = data.getPublisher();
-        this.releasedate = data.getDate();
+        this.releaseDate = data.getDate();
         this.url = url;
 
         // Gets the format from what the HTML brings and converts it to new time format: "yyyy-MM-dd'T'HH:mm:ssZ"
-        ZonedDateTime d = ZonedDateTime.parse(releasedate, ISO_ZONED_DATE_TIME);
+        ZonedDateTime d = ZonedDateTime.parse(releaseDate, ISO_ZONED_DATE_TIME);
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern(dateformat).withZone(ZoneId.of("UTC"));
-        this.releasedate = d.format(dtf);
+        this.releaseDate = d.format(dtf);
 
+        //Converts time zone format to "yyyy-MM-dd'T'HH:mm:ssZ"
         SimpleDateFormat sdf = new SimpleDateFormat(dateformat);
-        this.accessdate = sdf.format(new Date());
+        this.accessDate = sdf.format(new Date());
     }
 
     public void setUrl(String url){
@@ -78,11 +77,11 @@ public class Citation implements Serializable {
     }
 
     public String getReleasedDate(){
-        return releasedate;
+        return releaseDate;
     }
 
     public String getAccessDate(){
-        return accessdate;
+        return accessDate;
     }
     private ArrayList<String> scrapeAuthorNames(){
         //data.getAuthor is only returning single element with all author names.
