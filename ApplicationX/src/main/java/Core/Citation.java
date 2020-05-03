@@ -1,9 +1,13 @@
 package Core;
+
 import io.github.cdimascio.essence.Essence;
 import io.github.cdimascio.essence.EssenceResult;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlTransient;
 import java.io.IOException;
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
@@ -19,7 +23,10 @@ import static java.time.format.DateTimeFormatter.ISO_ZONED_DATE_TIME;
  * Citation MLA format for websites
  * Author's Last name, First name. "Title of Individual Web Page." Title of Website, Publisher, Date, URL.
  */
+
+@XmlAccessorType(XmlAccessType.FIELD)
 public class Citation implements Serializable {
+    @XmlTransient
     final private String dateformat = "yyyy-MM-dd'T'HH:mm:ssZ";
 
     private String pageTitle;
@@ -29,8 +36,9 @@ public class Citation implements Serializable {
     private String url;
     private String accessDate;
     private ArrayList<String> authorNames;
-
+    @XmlTransient
     private EssenceResult data;
+    @XmlTransient
     private Document doc;
     public Citation(String url) throws IOException {
         doc = Jsoup.connect(url).get();
@@ -131,7 +139,6 @@ public class Citation implements Serializable {
         return dataList;
     }
 
-    //for UI
     public String formatCitation(){
         String names = makeAuthorsFormat(getAuthorNames());
         String pt = getPageTitle();

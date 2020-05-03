@@ -1,13 +1,6 @@
 package Server.Resources;
 
-import Core.ResearchedCellsHandler;
-
-
-import Core.Citation;
-import Core.CitationController;
-
-import com.itextpdf.html2pdf.ConverterProperties;
-import com.itextpdf.html2pdf.HtmlConverter;
+import Core.*;
 import com.itextpdf.kernel.pdf.PdfDocument;
 import com.itextpdf.kernel.pdf.PdfWriter;
 import com.itextpdf.layout.Document;
@@ -16,7 +9,6 @@ import com.itextpdf.layout.element.IElement;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import javax.json.Json;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -50,7 +42,7 @@ public class DocumentResource{
 
         return jString;
     }
-    /*The request will get array of htmls as JSON, and then it is converted to String array of htmls .
+    /*The request will 678get array of htmls as JSON, and then it is converted to String array of htmls .
     After that it will be written into pdf.
      */
 
@@ -101,6 +93,28 @@ public class DocumentResource{
         };
         Response.ResponseBuilder response = Response.ok(fileStream);
         return response.build();
+    }
+
+    @POST
+    @Path("/formatCitation")
+    @Produces(MediaType.TEXT_PLAIN)
+    @Consumes(MediaType.APPLICATION_JSON)
+    public String formatCitation(Person p){
+        System.out.println("hi");
+
+        return p.getFirstName();
+    }
+
+    @POST
+    @Path("/createBib")
+    @Produces(MediaType.TEXT_PLAIN)
+    @Consumes(MediaType.APPLICATION_JSON)
+    public String makeBib(Citation [] citArray){
+        Bibliography b = new Bibliography();
+        for(int i= 0;i<citArray.length;i++){
+            b.add(citArray[i]);
+        }
+        return b.toString();
     }
 
     //TESTING
