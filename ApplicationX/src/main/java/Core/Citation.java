@@ -14,27 +14,26 @@ import java.util.Date;
  * Author's Last name, First name. "Title of Individual Web Page." Title of Website, Publisher, Date, URL.
  */
 public class Citation implements Serializable {
-    private ArrayList<String> authorNames;
     private String pageTitle;
     private String websiteTitle;
     private String publisher;
     private String releasedate;
     private String url;
     private Date accessdate;
-    
+    private ArrayList<String> authorNames;
+
     private EssenceResult data;
     private Document doc;
     public Citation(String url) throws IOException {
         doc = Jsoup.connect(url).get();
         data = Essence.extract(doc.html());
-
         this.authorNames = scrapeAuthorNames();
         this.pageTitle = data.getSoftTitle();
         this.websiteTitle = data.getTitle();
         this.publisher = data.getPublisher();
         this.releasedate = data.getDate();
         this.url = url;
-        this.accessdate = getAccessDate();
+        this.accessdate = new Date();
     }
 
     public void setUrl(String url){
@@ -42,11 +41,31 @@ public class Citation implements Serializable {
     }
 
     public String getUrl(){
-        return this.url;
+        return url;
     }
 
     public ArrayList<String> getAuthorNames() {
-        return this.authorNames;
+        return authorNames;
+    }
+
+    public String getPageTitle(){
+        return pageTitle;
+    }
+
+    public String getWebsiteTitle(){
+        return websiteTitle;
+    }
+
+    public String getPublisher(){
+        return publisher;
+    }
+
+    public String getReleasedDate(){
+        return releasedate;
+    }
+
+    public Date getAccessDate(){
+        return accessdate;
     }
     private ArrayList<String> scrapeAuthorNames(){
         //data.getAuthor is only returning single element with all author names.
@@ -89,33 +108,6 @@ public class Citation implements Serializable {
             System.out.println("author finallist:"+dataList.get(i) );
         }
         return dataList;
-    }
-
-    public String getPageTitle(){
-
-        return data.getSoftTitle();
-    }
-
-    public String getWebsiteTitle(){
-
-        return doc.title();
-    }
-
-    public String getPublisher(){
-
-        return data.getPublisher();
-    }
-
-    public String getReleasedDate(){
-
-        return data.getDate();
-
-    }
-
-    public Date getAccessDate(){
-        Date date = new Date();
-
-        return date;
     }
 
     //for UI
