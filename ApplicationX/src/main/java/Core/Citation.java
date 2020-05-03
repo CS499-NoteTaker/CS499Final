@@ -6,20 +6,30 @@ import org.jsoup.nodes.Document;
 
 import java.io.IOException;
 import java.io.Serializable;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.TimeZone;
+
+import static java.time.format.DateTimeFormatter.ISO_ZONED_DATE_TIME;
 
 /**
  * Citation MLA format for websites
  * Author's Last name, First name. "Title of Individual Web Page." Title of Website, Publisher, Date, URL.
  */
 public class Citation implements Serializable {
+    final private String dateformat = "yyyy-MM-dd'T'HH:mm:ssZ";
+
     private String pageTitle;
     private String websiteTitle;
     private String publisher;
     private String releasedate;
     private String url;
-    private Date accessdate;
+    private String accessdate;
     private ArrayList<String> authorNames;
 
     private EssenceResult data;
@@ -33,7 +43,14 @@ public class Citation implements Serializable {
         this.publisher = data.getPublisher();
         this.releasedate = data.getDate();
         this.url = url;
-        this.accessdate = new Date();
+
+        // Gets the format from what the HTML brings and converts it to new time format: "yyyy-MM-dd'T'HH:mm:ssZ"
+        ZonedDateTime d = ZonedDateTime.parse(releasedate, ISO_ZONED_DATE_TIME);
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern(dateformat).withZone(ZoneId.of("UTC"));
+        this.releasedate = d.format(dtf);
+
+        SimpleDateFormat sdf = new SimpleDateFormat(dateformat);
+        this.accessdate = sdf.format(new Date());
     }
 
     public void setUrl(String url){
@@ -64,7 +81,7 @@ public class Citation implements Serializable {
         return releasedate;
     }
 
-    public Date getAccessDate(){
+    public String getAccessDate(){
         return accessdate;
     }
     private ArrayList<String> scrapeAuthorNames(){
@@ -118,7 +135,7 @@ public class Citation implements Serializable {
         String pb = getPublisher();
         String rd = getReleasedDate();
         String ul = getUrl();
-        Date ad = getAccessDate();
+        String ad = getAccessDate();
 
 
         if(!pt.equals("")) pt = "\""+pt+"\". ";

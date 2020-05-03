@@ -16,6 +16,7 @@ import com.itextpdf.layout.element.IElement;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import javax.json.Json;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -38,9 +39,10 @@ public class DocumentResource{
     @POST
     @Path("/scrapeurl")
     @Produces(MediaType.TEXT_PLAIN)
-    @Consumes(MediaType.TEXT_PLAIN)
-    public String scrapeUrl(String url) throws IOException {
-        System.out.println("it is here");
+    @Consumes(MediaType.APPLICATION_JSON)
+    public String scrapeUrl(String payload) throws IOException {
+        JSONObject urlJson = new JSONObject(payload);
+        String url = urlJson.getString("url");
         Citation citation = c.scrapeUrl(url);
 
         JSONObject jsonObject = new JSONObject(citation);
