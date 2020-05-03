@@ -28,8 +28,7 @@ public class Citation implements Serializable {
         doc = Jsoup.connect(url).get();
         data = Essence.extract(doc.html());
 
-        this.authorNames = getAuthorNames();
-
+        this.authorNames = scrapeAuthorNames();
         this.pageTitle = data.getSoftTitle();
         this.websiteTitle = data.getTitle();
         this.publisher = data.getPublisher();
@@ -46,7 +45,10 @@ public class Citation implements Serializable {
         return this.url;
     }
 
-    private ArrayList<String> getAuthorNames(){
+    public ArrayList<String> getAuthorNames() {
+        return this.authorNames;
+    }
+    private ArrayList<String> scrapeAuthorNames(){
         //data.getAuthor is only returning single element with all author names.
         ArrayList<String> finalAuthorList = new ArrayList<>();
         ArrayList<String> templist = (ArrayList<String>)data.getAuthors();
