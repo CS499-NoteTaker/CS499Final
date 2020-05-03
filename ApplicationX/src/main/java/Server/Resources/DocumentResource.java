@@ -1,5 +1,11 @@
 package Server.Resources;
+
 import Core.ResearchedCellsHandler;
+
+
+import Core.Citation;
+import Core.CitationController;
+
 import com.itextpdf.html2pdf.ConverterProperties;
 import com.itextpdf.html2pdf.HtmlConverter;
 import com.itextpdf.kernel.pdf.PdfDocument;
@@ -9,19 +15,41 @@ import com.itextpdf.layout.element.IBlockElement;
 import com.itextpdf.layout.element.IElement;
 import org.json.JSONArray;
 import org.json.JSONObject;
-import javax.inject.Singleton;
+
+import javax.json.Json;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.StreamingOutput;
-import java.io.*;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
 import java.util.Arrays;
 import java.util.List;
 
 @Path("document/")
 //@Singleton
 public class DocumentResource{
+    private CitationController c;
 
+    public DocumentResource(){
+        c = new CitationController();
+    }
+
+    @POST
+    @Path("/scrapeurl")
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    public String scrapeUrl(String payload) throws IOException {
+        JSONObject urlJson = new JSONObject(payload);
+        String url = urlJson.getString("url");
+        Citation citation = c.scrapeUrl(url);
+        JSONObject jsonObject = new JSONObject(citation);
+        String jString = jsonObject.toString();
+        System.out.println(jString);
+
+        return jString;
+    }
     /*The request will get array of htmls as JSON, and then it is converted to String array of htmls .
     After that it will be written into pdf.
      */
