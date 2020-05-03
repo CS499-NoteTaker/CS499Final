@@ -42,11 +42,16 @@ public class Citation implements Serializable {
         this.releaseDate = data.getDate();
         this.url = url;
 
-        // Gets the format from what the HTML brings and converts it to new time format: "yyyy-MM-dd'T'HH:mm:ssZ"
-        ZonedDateTime d = ZonedDateTime.parse(releaseDate, ISO_ZONED_DATE_TIME);
-        DateTimeFormatter dtf = DateTimeFormatter.ofPattern(dateformat).withZone(ZoneId.of("UTC"));
-        this.releaseDate = d.format(dtf);
 
+        try {
+            // Gets the format from what the HTML brings and converts it to new time format: "yyyy-MM-dd'T'HH:mm:ssZ"
+            ZonedDateTime d = ZonedDateTime.parse(releaseDate, ISO_ZONED_DATE_TIME);
+            DateTimeFormatter dtf = DateTimeFormatter.ofPattern(dateformat).withZone(ZoneId.of("UTC"));
+            this.releaseDate = d.format(dtf);
+        } catch (Exception e) {
+            System.out.println("Error: ReleaseDate field was the following: \"" + releaseDate + "\"");
+            releaseDate = "";
+        }
         //Converts time zone format to "yyyy-MM-dd'T'HH:mm:ssZ"
         SimpleDateFormat sdf = new SimpleDateFormat(dateformat);
         this.accessDate = sdf.format(new Date());
