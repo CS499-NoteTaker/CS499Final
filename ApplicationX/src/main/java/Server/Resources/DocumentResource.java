@@ -38,19 +38,15 @@ public class DocumentResource{
 
     @POST
     @Path("/scrapeurl")
-    @Produces(MediaType.TEXT_PLAIN)
+    @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
     public String scrapeUrl(String payload) throws IOException {
         JSONObject urlJson = new JSONObject(payload);
         String url = urlJson.getString("url");
         Citation citation = c.scrapeUrl(url);
-
         JSONObject jsonObject = new JSONObject(citation);
         String jString = jsonObject.toString();
-
-
         System.out.println(jString);
-
 
         return jString;
     }
