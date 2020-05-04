@@ -100,6 +100,9 @@ public class DocumentResource{
     @Produces(MediaType.TEXT_PLAIN)
     @Consumes(MediaType.APPLICATION_JSON)
     public String formatCitation(Citation citation){
+        // Paramater should be String citation
+        // Convert string into a Citation object "citeObj"
+        // then return "citeObj.formatCitation();
         System.out.println("passed");
         return citation.formatCitation();
     }
@@ -109,8 +112,10 @@ public class DocumentResource{
     @Produces(MediaType.TEXT_PLAIN)
     @Consumes(MediaType.APPLICATION_JSON)
     public String makeBib(Bibliography b){
-
-
+        // makeBib resource method probably not necessary?
+        // the bibliography.toString() should be called within in createPdf Resource.
+        // the list of htmls. (One big json file)
+        // Because the list of citation objects will be passed with html list in one big object.
         return b.toString();
     }
 
