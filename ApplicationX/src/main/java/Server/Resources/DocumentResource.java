@@ -99,10 +99,13 @@ public class DocumentResource{
     @Path("/formatCitation")
     @Produces(MediaType.TEXT_PLAIN)
     @Consumes(MediaType.APPLICATION_JSON)
-    public String formatCitation(Person p){
-        System.out.println("hi");
-
-        return p.getFirstName();
+    public String formatCitation(Citation citation){
+        System.out.println("passed");
+//        System.out.println(citation.getAccessDate());
+//        System.out.println(citation.getAuthorNames());
+//        System.out.println(citation.getPageTitle());
+//        System.out.println(citation.getPublisher());
+        return citation.formatCitation();
     }
 
     @POST

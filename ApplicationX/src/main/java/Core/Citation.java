@@ -5,9 +5,6 @@ import io.github.cdimascio.essence.EssenceResult;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlTransient;
 import java.io.IOException;
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
@@ -24,10 +21,9 @@ import static java.time.format.DateTimeFormatter.ISO_ZONED_DATE_TIME;
  * Author's Last name, First name. "Title of Individual Web Page." Title of Website, Publisher, Date, URL.
  */
 
-@XmlAccessorType(XmlAccessType.FIELD)
+
 public class Citation implements Serializable {
-    @XmlTransient
-    final private String dateformat = "yyyy-MM-dd'T'HH:mm:ssZ";
+
 
     private String pageTitle;
     private String websiteTitle;
@@ -36,10 +32,16 @@ public class Citation implements Serializable {
     private String url;
     private String accessDate;
     private ArrayList<String> authorNames;
-    @XmlTransient
+
+    final private String dateformat = "yyyy-MM-dd'T'HH:mm:ssZ";
     private EssenceResult data;
-    @XmlTransient
+
     private Document doc;
+
+    public Citation() throws IOException{
+
+    }
+
     public Citation(String url) throws IOException {
         doc = Jsoup.connect(url).get();
         data = Essence.extract(doc.html());
@@ -70,31 +72,55 @@ public class Citation implements Serializable {
     }
 
     public String getUrl(){
-        return url;
+        return this.url;
     }
 
     public ArrayList<String> getAuthorNames() {
-        return authorNames;
+        return this.authorNames;
+    }
+
+    public void setAuthorNames(ArrayList<String> authorNames){
+        this.authorNames = authorNames;
     }
 
     public String getPageTitle(){
-        return pageTitle;
+        return this.pageTitle;
+    }
+
+    public void setPageTitle(String pageTitle){
+        this.pageTitle = pageTitle;
     }
 
     public String getWebsiteTitle(){
-        return websiteTitle;
+        return this.websiteTitle;
+    }
+
+    public void setWebsiteTitle(String websiteTitle){
+        this.websiteTitle = websiteTitle;
     }
 
     public String getPublisher(){
-        return publisher;
+        return this.publisher;
+    }
+
+    public void setPublisher(String publisher){
+        this.publisher = publisher;
     }
 
     public String getReleasedDate(){
-        return releaseDate;
+        return this.releaseDate;
+    }
+
+    public void setReleaseDate(String releaseDate){
+        this.releaseDate = releaseDate;
     }
 
     public String getAccessDate(){
-        return accessDate;
+        return this.accessDate;
+    }
+
+    public void setAccessDate(String accessDate){
+        this.accessDate = accessDate;
     }
     private ArrayList<String> scrapeAuthorNames(){
         //data.getAuthor is only returning single element with all author names.
@@ -136,28 +162,41 @@ public class Citation implements Serializable {
         for(int i = 0;i < dataList.size();i++){
             System.out.println("author finallist:"+dataList.get(i) );
         }
+
         return dataList;
     }
 
     public String formatCitation(){
-        String names = makeAuthorsFormat(getAuthorNames());
-        String pt = getPageTitle();
-        String wt = getWebsiteTitle();
-        String pb = getPublisher();
-        String rd = getReleasedDate();
-        String ul = getUrl();
-        String ad = getAccessDate();
+        System.out.println("Got here");
+        String names = makeAuthorsFormat(this.authorNames);
+        String pt =this.pageTitle;
+        String wt = this.websiteTitle;
+        String pb = this.publisher;
+        String rd = this.releaseDate;
+        String ul = this.url;
+        String ad = this.accessDate;
+        System.out.println(ad);
+
+
 
 
         if(!pt.equals("")) pt = "\""+pt+"\". ";
+
         if(!wt.equals("")) wt = "\""+wt+"\". ";
-        if(!pb.isEmpty()) pb = pb+". ";
+
+        if(!pb.equals("")) pb = pb+". ";
+
         if(!rd.equals(""))  rd = rd+". ";
+
         ul = ul+". ";
+        //System.out.println(ul);
         String d = ad+". ";
-        String s;
+        System.out.println(d);
+        String s="";
 
         s = names+pt+wt+pb+rd+ul+d;
+       System.out.println(s);
+
         return s;
     }
 
@@ -189,6 +228,7 @@ public class Citation implements Serializable {
                 s += lastName+", "+firstName+"., ";
             }
         }
+
         return s;
     }
 
