@@ -166,16 +166,58 @@ public class Citation implements Serializable {
         return dataList;
     }
 
+    public String getDay(String date){
+        if(!date.isEmpty() || !date.equals("")){
+            return date.substring(8,10);
+        }
+        else return "";
+
+    }
+
+    public String getMonth(String date){
+        if(!date.isEmpty() || !date.equals("")){
+            String s = date.substring(5,7);
+            if(s.equals("01")) return "Jan";
+            else if(s.equals("02")) return "Feb";
+            else if(s.equals("03")) return "Mar";
+            else if(s.equals("04")) return "Apr";
+            else if(s.equals("05")) return "May";
+            else if(s.equals("06")) return "Jun";
+            else if(s.equals("07")) return "Jul";
+            else if(s.equals("08")) return "Aug";
+            else if(s.equals("09")) return "Sept";
+            else if(s.equals("10")) return "Oct";
+            else if(s.equals("11")) return "Nov";
+            else if(s.equals("12")) return "Dec";
+            else return "";
+        }
+        return "";
+
+
+    }
+
+    public String getYear(String date){
+        if(!date.isEmpty() || !date.equals("")){
+            return date.substring(0,4);
+        }
+        else return "";
+
+    }
+
     public String formatCitation(){
-        System.out.println("Got here");
+        System.out.println(this.authorNames);
         String names = makeAuthorsFormat(this.authorNames);
+
         String pt =this.pageTitle;
         String wt = this.websiteTitle;
         String pb = this.publisher;
-        String rd = this.releaseDate;
+        String rd="";
+        if(!this.releaseDate.equals("")){
+            rd = getDay(this.releaseDate)+" "+getMonth(this.releaseDate)+" "+getYear(this.releaseDate);
+        }
         String ul = this.url;
-        String ad = this.accessDate;
-        System.out.println(ad);
+        String ad = getDay(this.accessDate)+" "+getMonth(this.accessDate)+" "+getYear(this.accessDate);
+        System.out.println("access date:"+ad);
 
 
 
@@ -184,12 +226,13 @@ public class Citation implements Serializable {
 
         if(!wt.equals("")) wt = "\""+wt+"\". ";
 
-        if(!pb.equals("")) pb = pb+". ";
+        if(!pb.equals("")) pb = pb+", ";
 
-        if(!rd.equals(""))  rd = rd+". ";
+        if(!rd.equals(""))  rd = rd+", ";
 
         ul = ul+". ";
         //System.out.println(ul);
+
         String d = ad+". ";
         System.out.println(d);
         String s="";
@@ -236,7 +279,5 @@ public class Citation implements Serializable {
     public String addNumbertoCitation(int num, Citation citation) {
         return +(num+1) + ". " + "   " + citation.formatCitation();
     }
-
-
 
 }

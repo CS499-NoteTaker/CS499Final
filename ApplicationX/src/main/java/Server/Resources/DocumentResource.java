@@ -10,6 +10,8 @@ import com.itextpdf.kernel.pdf.PdfWriter;
 import com.itextpdf.layout.Document;
 import com.itextpdf.layout.element.IBlockElement;
 import com.itextpdf.layout.element.IElement;
+import com.itextpdf.layout.element.Paragraph;
+import com.itextpdf.layout.property.TextAlignment;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -68,6 +70,7 @@ public class DocumentResource{
     public Response createPdf(String src) throws IOException{
         // Converts json into a JSON Object
         final JSONObject jsonObject = new JSONObject(src);
+        Bibliography b = new Bibliography();
         JSONArray citationObjectsArray = jsonObject.getJSONArray("citationObjects");
         for(int i=0;i<citationObjectsArray.length();i++){
             String s = citationObjectsArray.get(i).toString();
@@ -76,16 +79,9 @@ public class DocumentResource{
              int index =Integer.parseInt( citOb.get("index").toString());
              Gson g = new Gson();
              Citation citation = g.fromJson(citOb.get("citation").toString(),Citation.class);
+             b.add(citation);
 
-
-
-
-
-
-
-             System.out.println(citOb);
-             System.out.println(index);
-             System.out.println(citation.formatCitation());
+             System.out.println("Formatted citation here"+citation.formatCitation());
         }
 
 
@@ -101,9 +97,18 @@ public class DocumentResource{
         // Converts researched cells into HTML elements and appends to PDF doc
         for(int i = 0; i < rcHandler.size(); i++) {
             List<IElement> htmlElements = rcHandler.getHtmlResearchedCell(i);
-            for( IElement element : htmlElements)
+            for( IElement element : htmlElements) {
+                System.out.println("This is IElement");
                 doc.add((IBlockElement) element);
+            }
         }
+        Paragraph p = new Paragraph("\n\nReferences");
+        p.setTextAlignment(TextAlignment.CENTER);
+        doc.add(p);
+        Paragraph p1 = new Paragraph(b.toString());
+        doc.add(p1);
+
+
         doc.close();
 
 

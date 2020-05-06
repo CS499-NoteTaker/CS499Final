@@ -32,7 +32,7 @@ public class Bibliography {
     }
 
     public String toString(){
-        String list = "\t\t\t\t\t\t\t\t\t\t\t\tBibliography\n\n";
+        String list = "";
         ArrayList<Citation> templist= new ArrayList<>();
         if(citationList.size()!=0){
             for(int i =0;i < citationList.size();i++){
