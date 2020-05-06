@@ -1,6 +1,10 @@
 package Server.Resources;
 
-import Core.*;
+import Core.Bibliography;
+import Core.Citation;
+import Core.CitationController;
+import Core.ResearchedCellsHandler;
+import com.google.gson.Gson;
 import com.itextpdf.kernel.pdf.PdfDocument;
 import com.itextpdf.kernel.pdf.PdfWriter;
 import com.itextpdf.layout.Document;
@@ -64,10 +68,31 @@ public class DocumentResource{
     public Response createPdf(String src) throws IOException{
         // Converts json into a JSON Object
         final JSONObject jsonObject = new JSONObject(src);
+        JSONArray citationObjectsArray = jsonObject.getJSONArray("citationObjects");
+        for(int i=0;i<citationObjectsArray.length();i++){
+            String s = citationObjectsArray.get(i).toString();
+
+             JSONObject citOb = new JSONObject(s);
+             int index =Integer.parseInt( citOb.get("index").toString());
+             Gson g = new Gson();
+             Citation citation = g.fromJson(citOb.get("citation").toString(),Citation.class);
+
+
+
+
+
+
+
+             System.out.println(citOb);
+             System.out.println(index);
+             System.out.println(citation.formatCitation());
+        }
+
+
         ResearchedCellsHandler rcHandler = new ResearchedCellsHandler(jsonObject);
 
-        System.out.println(rcHandler.toString());
-        
+       // System.out.println(rcHandler.toString());
+
         // Instantiates Byte array output stream and PDF doc.
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         PdfDocument pdfDoc = new PdfDocument(new PdfWriter(baos));
@@ -136,4 +161,6 @@ public class DocumentResource{
         return Arrays.toString(arr);
 
     }
+
+
 }
