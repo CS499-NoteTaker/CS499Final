@@ -102,11 +102,15 @@ public class DocumentResource{
                 doc.add((IBlockElement) element);
             }
         }
-        Paragraph p = new Paragraph("\n\nReferences");
-        p.setTextAlignment(TextAlignment.CENTER);
-        doc.add(p);
-        Paragraph p1 = new Paragraph(b.toString());
-        doc.add(p1);
+        if(b.getCitationList().size()!=0){
+            Paragraph p = new Paragraph("\n\nReferences");
+            p.setTextAlignment(TextAlignment.CENTER);
+            doc.add(p);
+            Paragraph p1 = new Paragraph(b.toString());
+            doc.add(p1);
+
+        }
+
 
 
         doc.close();
