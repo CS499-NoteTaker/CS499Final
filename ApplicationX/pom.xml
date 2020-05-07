@@ -138,6 +138,17 @@
             <artifactId>essence</artifactId>
             <version>0.12.6</version>
         </dependency>
+        <dependency>
+            <groupId>com.sun.jersey</groupId>
+            <artifactId>jersey-server</artifactId>
+            <version>1.8</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.sun.jersey</groupId>
+            <artifactId>jersey-json</artifactId>
+            <version>1.8</version>
+        </dependency>
 
 
 
@@ -165,7 +176,7 @@
         <dependency>
             <groupId>com.sun.jersey</groupId>
             <artifactId>jersey-client</artifactId>
-            <version>1.19.4</version>
+            <version>1.8</version>
         </dependency>
 
     </dependencies>

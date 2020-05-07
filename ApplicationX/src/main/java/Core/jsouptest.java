@@ -6,6 +6,7 @@ public class jsouptest {
 
         String url = "https://www.nytimes.com/2020/05/02/us/politics/vaccines-coronavirus-research.html?action=click&module=Spotlight&pgtype=Homepage";
         Citation c = new Citation(url);
+
         System.out.println(c.formatCitation());
 
 

@@ -6,13 +6,21 @@ import java.util.ArrayList;
  **/
 
 public class Bibliography {
-    ArrayList<Citation> citationList ;
-    String bibString;
+    private ArrayList<Citation> citationList ;
+    private String bibString;
     public Bibliography(){
         citationList = new ArrayList<>();
     }
     public void add(Citation citation){
         citationList.add(citation);
+    }
+
+    public ArrayList<Citation> getCitationList(){
+        return this.citationList;
+    }
+
+    public void setCitationList(ArrayList<Citation> citationList){
+        this.citationList = citationList;
     }
 
     public void delete(int index){
@@ -24,7 +32,7 @@ public class Bibliography {
     }
 
     public String toString(){
-        String list = "\t\t\t\t\t\tBibliography\n\n";
+        String list = "";
         ArrayList<Citation> templist= new ArrayList<>();
         if(citationList.size()!=0){
             for(int i =0;i < citationList.size();i++){
