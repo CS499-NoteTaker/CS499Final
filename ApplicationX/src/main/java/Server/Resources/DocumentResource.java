@@ -141,6 +141,13 @@ public class DocumentResource{
         return citation.formatCitation();
     }
 
+    @GET
+    @Path("/test")
+    @Produces(MediaType.TEXT_PLAIN)
+    public String testthis(){
+        return "got it!";
+    }
+
     @POST
     @Path("/createBib")
     @Produces(MediaType.TEXT_PLAIN)

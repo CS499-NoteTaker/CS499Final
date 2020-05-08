@@ -28,7 +28,7 @@ public class Citation implements Serializable {
     private String pageTitle;
     private String websiteTitle;
     private String publisher;
-    private String releaseDate;
+    private String releasedDate;
     private String url;
     private String accessDate;
     private ArrayList<String> authorNames;
@@ -49,18 +49,18 @@ public class Citation implements Serializable {
         this.pageTitle = data.getSoftTitle();
         this.websiteTitle = data.getTitle();
         this.publisher = data.getPublisher();
-        this.releaseDate = data.getDate();
+        this.releasedDate = data.getDate();
         this.url = url;
 
 
         try {
             // Gets the format from what the HTML brings and converts it to new time format: "yyyy-MM-dd'T'HH:mm:ssZ"
-            ZonedDateTime d = ZonedDateTime.parse(releaseDate, ISO_ZONED_DATE_TIME);
+            ZonedDateTime d = ZonedDateTime.parse(releasedDate, ISO_ZONED_DATE_TIME);
             DateTimeFormatter dtf = DateTimeFormatter.ofPattern(dateformat).withZone(ZoneId.of("UTC"));
-            this.releaseDate = d.format(dtf);
+            this.releasedDate = d.format(dtf);
         } catch (Exception e) {
-            System.out.println("Error: ReleaseDate field was the following: \"" + releaseDate + "\"");
-            releaseDate = "";
+            System.out.println("Error: ReleaseDate field was the following: \"" + releasedDate + "\"");
+            releasedDate = "";
         }
         //Converts time zone format to "yyyy-MM-dd'T'HH:mm:ssZ"
         SimpleDateFormat sdf = new SimpleDateFormat(dateformat);
@@ -108,11 +108,11 @@ public class Citation implements Serializable {
     }
 
     public String getReleasedDate(){
-        return this.releaseDate;
+        return this.releasedDate;
     }
 
-    public void setReleaseDate(String releaseDate){
-        this.releaseDate = releaseDate;
+    public void setReleasedDate(String releasedDate){
+        this.releasedDate = releasedDate;
     }
 
     public String getAccessDate(){
@@ -212,8 +212,8 @@ public class Citation implements Serializable {
         String wt = this.websiteTitle;
         String pb = this.publisher;
         String rd="";
-        if(!this.releaseDate.equals("")){
-            rd = getDay(this.releaseDate)+" "+getMonth(this.releaseDate)+" "+getYear(this.releaseDate);
+        if(!this.releasedDate.equals("")){
+            rd = getDay(this.releasedDate)+" "+getMonth(this.releasedDate)+" "+getYear(this.releasedDate);
         }
         String ul = this.url;
         String ad = getDay(this.accessDate)+" "+getMonth(this.accessDate)+" "+getYear(this.accessDate);
