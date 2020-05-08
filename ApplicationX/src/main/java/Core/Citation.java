@@ -156,6 +156,7 @@ public class Citation implements Serializable {
             System.out.println("Before adding author: "+author);
             String [] testNameList = author.split(" ");
             if(testNameList.length>=2 && testNameList.length<=3){
+
                 dataList.add(author);
             }
         }
