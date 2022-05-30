@@ -2,11 +2,11 @@ package Core;
 import org.junit.*;
 public class ControllerTest {
     @Test
-    public String getCell(){
-        return null;
+    public void getCell(){
+        System.out.println("ControllerTest.getCell()");
     }
     @Test
-    public ResearchedCells getAllCell(){
-        return null;
+    public void getAllCell(){
+        System.out.println("ControllerTest.getAllCell()");
     }
 }
