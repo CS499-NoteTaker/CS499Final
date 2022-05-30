@@ -5,7 +5,6 @@
 
     <groupId>XResearch</groupId>
     <artifactId>ApplicationX</artifactId>
-    <packaging>war</packaging>
     <version>1.0-SNAPSHOT</version>
     <name>ApplicationX</name>
 
