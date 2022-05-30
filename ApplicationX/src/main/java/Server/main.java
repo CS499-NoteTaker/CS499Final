@@ -12,7 +12,7 @@ public class main {
 
     public static final String[] RESOURCES_PACKAGES = {"Server/Resources"};
 
-    public static void main(String [] args){
+    public static void main(String [] args) {
         startServer();
     }
 
